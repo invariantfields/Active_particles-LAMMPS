@@ -55,9 +55,9 @@ thermo_style	custom step temp c_msd[4] v_twopoint v_fitslope
 
 # only need to run for 10K steps to make a good 100-frame movie
 
-dump	        1 all custom 1 tmp.dump id type vx vy vz
+#dump	        1 all custom 1 tmp.dump id type vx vy vz
 
 #dump		2 all image 100 image.*.jpg type type zoom 1.6 adiam 1.2
-timestep     0.0000001
-thermo          10
+timestep     0.00001
+thermo         1000
 run	        100000
