@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <cmath>
 #include "fix_nve.h"
 #include "atom.h"
 #include "force.h"
@@ -67,7 +68,7 @@ void FixNVE::initial_integrate(int vflag)
   double dtfm;
 
   // update v and x of atoms in group
-
+  double PI = 6.28319;
   double **x = atom->x;
   double **v = atom->v;
   double **f = atom->f;
@@ -84,6 +85,7 @@ void FixNVE::initial_integrate(int vflag)
         dtfm = dtf / rmass[i];
         v[i][0] = f[i][0];
         v[i][1] = f[i][1];
+        v[i][2] = fmod(v[i][2],PI);
         v[i][2] = dtfm * f[i][2];
         x[i][0] += dtv * v[i][0];
         x[i][1] += dtv * v[i][1];
@@ -96,6 +98,7 @@ void FixNVE::initial_integrate(int vflag)
         dtfm = dtf / mass[type[i]];
         v[i][0] =  f[i][0];
         v[i][1] =  f[i][1];
+        v[i][2] = fmod(v[i][2],PI);
         v[i][2] += dtfm * f[i][2];
         x[i][0] += dtv * v[i][0];
         x[i][1] += dtv * v[i][1];
