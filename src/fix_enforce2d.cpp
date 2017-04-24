@@ -103,6 +103,7 @@ void FixEnforce2D::min_setup(int vflag)
 
 void FixEnforce2D::post_force(int vflag)
 {
+  double **x = atom->x;
   double **v = atom->v;
   double **f = atom->f;
   int *mask = atom->mask;
@@ -111,8 +112,9 @@ void FixEnforce2D::post_force(int vflag)
 
   for (int i = 0; i < nlocal; i++)
     if (mask[i] & groupbit) {
-      v[i][2] = 0.0;
-      f[i][2] = 0.0;
+      //v[i][2] = 0.0;
+      //f[i][2] = 0.0;
+      x[i][2] = 0.0;//Restricting position instead of velocity and force
     }
 
   // for systems with omega/angmom/torque, zero x and y components
