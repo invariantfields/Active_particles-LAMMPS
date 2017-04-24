@@ -87,11 +87,11 @@ double ComputeTemp::compute_scalar()
   if (rmass) {
     for (int i = 0; i < nlocal; i++)
       if (mask[i] & groupbit)
-        t += (v[i][0]*v[i][0] + v[i][1]*v[i][1] + v[i][2]*v[i][2]) * rmass[i];
+        t += (v[i][0]*v[i][0] + v[i][1]*v[i][1] /*+ v[i][2]*v[i][2]*/) * rmass[i];
   } else {
     for (int i = 0; i < nlocal; i++)
       if (mask[i] & groupbit)
-        t += (v[i][0]*v[i][0] + v[i][1]*v[i][1] + v[i][2]*v[i][2]) *
+        t += (v[i][0]*v[i][0] + v[i][1]*v[i][1] + /*v[i][2]*v[i][2]*/) *
           mass[type[i]];
   }
 
