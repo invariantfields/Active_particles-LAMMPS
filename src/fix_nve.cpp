@@ -68,7 +68,7 @@ void FixNVE::initial_integrate(int vflag)
   double dtfm;
 
   // update v and x of atoms in group
-  double PI = 6.28319;
+  double PI = 3.14159;
   double **x = atom->x;
   double **v = atom->v;
   double **f = atom->f;
