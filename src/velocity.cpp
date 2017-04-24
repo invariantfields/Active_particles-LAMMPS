@@ -291,8 +291,8 @@ void Velocity::create(double t_desired, int seed)
           else factor = 1.0/sqrt(mass[type[m]]);
           v[m][0] = vx * factor;
           v[m][1] = vy * factor;
-          if (dim == 3) v[m][2] = vz * factor;
-          else v[m][2] = 0.0;
+          if (dim == 3) v[m][2] = vz * 6.28;
+          else v[m][2] = vz * 6.28;
         }
       }
     }
@@ -323,8 +323,8 @@ void Velocity::create(double t_desired, int seed)
         else factor = 1.0/sqrt(mass[type[i]]);
         v[i][0] = vx * factor;
         v[i][1] = vy * factor;
-        if (dim == 3) v[i][2] = vz * factor;
-        else v[i][2] = 0.0;
+        if (dim == 3) v[i][2] = vz * 6.28;
+        else v[i][2] = vz * 6.28;
       }
     }
 
@@ -349,8 +349,8 @@ void Velocity::create(double t_desired, int seed)
         else factor = 1.0/sqrt(mass[type[i]]);
         v[i][0] = vx * factor;
         v[i][1] = vy * factor;
-        if (dim == 3) v[i][2] = vz * factor;
-        else v[i][2] = 0.0;
+        if (dim == 3) v[i][2] = vz * 6.28;
+        else v[i][2] = vz * 6.28;
       }
     }
   }
@@ -741,7 +741,7 @@ void Velocity::rescale(double t_old, double t_new)
     if (mask[i] & groupbit) {
       v[i][0] *= factor;
       v[i][1] *= factor;
-      v[i][2] *= factor;
+     // v[i][2] *= factor;
     }
 }
 
@@ -772,7 +772,7 @@ void Velocity::zero_momentum()
     if (mask[i] & groupbit) {
       v[i][0] -= vcm[0];
       v[i][1] -= vcm[1];
-      v[i][2] -= vcm[2];
+      //v[i][2] -= vcm[2];
     }
 }
 
@@ -819,7 +819,7 @@ void Velocity::zero_rotation()
       dz = unwrap[2] - xcm[2];
       v[i][0] -= omega[1]*dz - omega[2]*dy;
       v[i][1] -= omega[2]*dx - omega[0]*dz;
-      v[i][2] -= omega[0]*dy - omega[1]*dx;
+      //v[i][2] -= omega[0]*dy - omega[1]*dx;
     }
 }
 
