@@ -264,10 +264,8 @@ void FixLangevin::init()
 
   if (!atom->rmass) {
     for (int i = 1; i <= atom->ntypes; i++) {
-      gfactor1[i] = -atom->mass[i] / t_period / force->ftm2v;
-      gfactor2[i] = sqrt(atom->mass[i]) *
-        sqrt(24.0*force->boltz/t_period/update->dt/force->mvv2e) /
-        force->ftm2v;
+       gfactor1[i] = sqrt(24.0*t_period/update->dt/force->mvv2e)/force->ftm2v;
+      gfactor2[i] = sqrt(3*24.0*t_period/update->dt/force->mvv2e/atom->mass[i])/force->ftm2v;
       gfactor1[i] *= 1.0/ratio[i];
       gfactor2[i] *= 1.0/sqrt(ratio[i]);
     }
@@ -461,7 +459,7 @@ void FixLangevin::post_force_untemplated
 #endif
 {
   double gamma1,gamma2;
-
+  double speed = seed/1000;
   double **v = atom->v;
   double **f = atom->f;
   double *rmass = atom->rmass;
@@ -493,7 +491,7 @@ void FixLangevin::post_force_untemplated
   double fdrag[3],fran[3],fsum[3],fsumall[3];
   bigint count;
   double fswap;
-
+  double gamma3;
   double boltz = force->boltz;
   double dt = update->dt;
   double mvv2e = force->mvv2e;
@@ -525,32 +523,34 @@ void FixLangevin::post_force_untemplated
     if (mask[i] & groupbit) {
       if (Tp_TSTYLEATOM) tsqrt = sqrt(tforce[i]);
       if (Tp_RMASS) {
-	gamma1 = -rmass[i] / t_period / ftm2v;
-	gamma2 = sqrt(rmass[i]) * sqrt(24.0*boltz/t_period/dt/mvv2e) / ftm2v;
-	gamma1 *= 1.0/ratio[type[i]];
-	gamma2 *= 1.0/sqrt(ratio[type[i]]) * tsqrt;
+  gamma1 = t_period/boltz/t_stop/ ftm2v;
+  gamma2 = sqrt(24.0*t_period/dt/mvv2e)/ftm2v;
+  gamma1 *= 1.0/ratio[type[i]];
+  gamma2 *= 1.0/sqrt(ratio[type[i]]) * tsqrt;
+  gamma3 = gamma2*sqrt(3)/rmass[i];
       } else {
-	gamma1 = gfactor1[type[i]];
-	gamma2 = gfactor2[type[i]] * tsqrt;
+	gamma1 = t_period/force->boltz/t_stop/force->ftm2v;
+  gamma2 = gfactor1[type[i]] ;
+  gamma3 = gfactor2[type[i]] ;
       }
 
       fran[0] = gamma2*(random->uniform()-0.5);
       fran[1] = gamma2*(random->uniform()-0.5);
-      fran[2] = gamma2*(random->uniform()-0.5);
+      fran[2] = gamma3*(random->uniform()-0.5);
 
       if (Tp_BIAS) {
 	temperature->remove_bias(i,v[i]);
-	fdrag[0] = gamma1*v[i][0];
-	fdrag[1] = gamma1*v[i][1];
-	fdrag[2] = gamma1*v[i][2];
-	if (v[i][0] == 0.0) fran[0] = 0.0;
+	fdrag[0] = speed*gamma1*sin(v[i][2]);
+  fdrag[1] = speed*gamma1*cos(v[i][2]);
+  fdrag[2] = 0;
+  if (v[i][0] == 0.0) fran[0] = 0.0;
 	if (v[i][1] == 0.0) fran[1] = 0.0;
 	if (v[i][2] == 0.0) fran[2] = 0.0;
 	temperature->restore_bias(i,v[i]);
       } else {
-	fdrag[0] = 0;
-	fdrag[1] = 0;
-	fdrag[2] = 0;
+	fdrag[0] = speed*gamma1*sin(v[i][2]);
+  fdrag[1] = speed*gamma1*cos(v[i][2]);
+  fdrag[2] = 0;
       }
 
       if (Tp_GJF) {
@@ -604,7 +604,7 @@ void FixLangevin::post_force_untemplated
       if (mask[i] & groupbit) {
         f[i][0] -= fsumall[0];
         f[i][1] -= fsumall[1];
-        f[i][2] -= fsumall[2];
+        //f[i][2] -= fsumall[2];
       }
     }
   }

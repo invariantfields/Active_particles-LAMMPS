@@ -23,7 +23,7 @@ create_box      1 simbox
 create_atoms    1 box
 
 pair_style      lj/cut ${rc}
-pair_coeff      * * 1 0.00001
+pair_coeff      * * 1 0
 
 mass            * 1.0
 velocity        all create $t 97287
@@ -58,6 +58,6 @@ thermo_style	custom step temp c_msd[4] v_twopoint v_fitslope
 dump	        1 all custom 10000 tmp.dump id type z vz
 
 #dump		2 all image 100 image.*.jpg type type zoom 1.6 adiam 1.2
-timestep     0.00001
+timestep     0.0001
 thermo         1000
-run	        100000
+run	        1000000
