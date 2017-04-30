@@ -82,11 +82,12 @@ void FixNVE::initial_integrate(int vflag)
   if (rmass) {
     for (int i = 0; i < nlocal; i++)
       if (mask[i] & groupbit) {
+        //printf("i'm here.\n");
         dtfm = dtf / rmass[i];
         v[i][0] = f[i][0];
         v[i][1] = f[i][1];
         v[i][2] = fmod(v[i][2],PI);
-        v[i][2] = dtfm * f[i][2];
+        v[i][2] += dtv * f[i][2];
         x[i][0] += dtv * v[i][0];
         x[i][1] += dtv * v[i][1];
         x[i][2] += dtv * v[i][2];
@@ -96,10 +97,11 @@ void FixNVE::initial_integrate(int vflag)
     for (int i = 0; i < nlocal; i++)
       if (mask[i] & groupbit) {
         dtfm = dtf / mass[type[i]];
+        //printf("not here\n");
         v[i][0] =  f[i][0];
         v[i][1] =  f[i][1];
         v[i][2] = fmod(v[i][2],PI);
-        v[i][2] += dtfm * f[i][2];
+        v[i][2] += dtv * f[i][2];
         x[i][0] += dtv * v[i][0];
         x[i][1] += dtv * v[i][1];
         x[i][2] += dtv * v[i][2];

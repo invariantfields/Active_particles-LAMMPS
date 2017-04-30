@@ -7,9 +7,12 @@ variable	x equal 40
 variable	y equal 40
 
 variable	rho equal 0.6
-variable        t equal 1.0
-variable	rc equal 2.5
-
+variable    t equal 1.0
+variable 	phi equal 0.8
+variable 	sigma equal sqrt(${phi}/(2*3.14))
+variable	rc equal 1.3*${sigma}
+variable 	vp equal 10
+variable 	seed equal 1000*${vp} 
 # problem setup
 
 units		lj
@@ -23,25 +26,15 @@ create_box      1 simbox
 create_atoms    1 box
 
 pair_style      lj/cut ${rc}
-pair_coeff      * * 1 0
+pair_coeff      * * 0 0
 
 mass            * 1.0
-velocity        all create $t 97287
+velocity        all create $t 12323
 
-fix             1 all nve
-fix	        2 all langevin $t $t 0.1 498094
+fix         1 all nve
+fix	        2 all langevin $t $t 1 ${seed}
 fix	        3 all enforce2d
 
-# equilibration run
-
-#thermo          1000
-#run	        5000
-
-#unfix		2
-
-# data gathering run
-
-#reset_timestep  0
 
 # factor of 4 in 2 variables is for 2d
 

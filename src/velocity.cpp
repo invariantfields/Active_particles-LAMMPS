@@ -291,8 +291,8 @@ void Velocity::create(double t_desired, int seed)
           else factor = 1.0/sqrt(mass[type[m]]);
           v[m][0] = vx * factor;
           v[m][1] = vy * factor;
-          if (dim == 3) v[m][2] = vz * 6.28;
-          else v[m][2] = vz * 6.28;
+          if (dim == 3) v[m][2] = vz * 6.28319;
+          else v[m][2] = vz * 6.28319;
         }
       }
     }
@@ -323,8 +323,8 @@ void Velocity::create(double t_desired, int seed)
         else factor = 1.0/sqrt(mass[type[i]]);
         v[i][0] = vx * factor;
         v[i][1] = vy * factor;
-        if (dim == 3) v[i][2] = vz * 6.28;
-        else v[i][2] = vz * 6.28;
+        if (dim == 3) v[i][2] = vz * 6.28319;
+        else v[i][2] = vz * 6.28319;
       }
     }
 
@@ -349,8 +349,8 @@ void Velocity::create(double t_desired, int seed)
         else factor = 1.0/sqrt(mass[type[i]]);
         v[i][0] = vx * factor;
         v[i][1] = vy * factor;
-        if (dim == 3) v[i][2] = vz * 6.28;
-        else v[i][2] = vz * 6.28;
+        if (dim == 3) v[i][2] = vz * 6.28319;
+        else v[i][2] = vz * 6.28319;
       }
     }
   }
