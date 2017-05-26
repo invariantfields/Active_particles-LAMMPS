@@ -459,7 +459,7 @@ void FixLangevin::post_force_untemplated
 #endif
 {
   double gamma1,gamma2;
-  double speed = seed/1000;
+  double speed = (seed-1)/1000;
   double **v = atom->v;
   double **f = atom->f;
   double *rmass = atom->rmass;

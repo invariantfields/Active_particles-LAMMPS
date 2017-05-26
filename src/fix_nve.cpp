@@ -86,7 +86,7 @@ void FixNVE::initial_integrate(int vflag)
         dtfm = dtf / rmass[i];
         v[i][0] = f[i][0];
         v[i][1] = f[i][1];
-        v[i][2] = fmod(v[i][2],PI);
+        v[i][2] = fmod(v[i][2],2*PI);
         v[i][2] += dtv * f[i][2];
         x[i][0] += dtv * v[i][0];
         x[i][1] += dtv * v[i][1];
@@ -100,7 +100,7 @@ void FixNVE::initial_integrate(int vflag)
         //printf("not here\n");
         v[i][0] =  f[i][0];
         v[i][1] =  f[i][1];
-        v[i][2] = fmod(v[i][2],PI);
+        v[i][2] = fmod(v[i][2],2*PI);
         v[i][2] += dtv * f[i][2];
         x[i][0] += dtv * v[i][0];
         x[i][1] += dtv * v[i][1];
